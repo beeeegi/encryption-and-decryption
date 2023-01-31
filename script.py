@@ -1,13 +1,13 @@
 import sys
 
 def reading():
-    with open('file.py') as file:
+    with open(sys.argv[2]) as file:
         lines = file.read()
     return lines
 
 def encode(string):
     result= ""
-    file = open("file.py", "w")
+    file = open(sys.argv[2], "w")
 
     for char in string:
         if(char.isupper()):
@@ -21,7 +21,7 @@ def encode(string):
 
 def decode(string):
     result= ""
-    file = open("file.py", "w")
+    file = open(sys.argv[2], "w")
     
     for char in string:
         if(char.islower()):
@@ -37,26 +37,30 @@ def decode(string):
 arguments = len(sys.argv)
 
 def main():
-    if(arguments == 1):
-        print("aklia moqmedebis argumenti")
-    elif(arguments == 2):
-        print("aklia failis argumenti")
-    elif(arguments == 3):
-        action = sys.argv[1]
-        file = sys.argv[2]
-        if(file == "file.py"):
-            if(action == "-E"):
+    match arguments:
+        case 1:
+            print("aklia moqmedebis argumenti")
+        case 2:
+            print("aklia failis argumenti")
+        case 3:
+            action = sys.argv[1]
+            file = sys.argv[2]
+            if not file:
+               return print("miutitet faili argumentshi")
+            try:
+                open(sys.argv[2])
+            except:
+                return print("msgavsi faili ar arsebobs")
+            match action:
+              case "-E":
                 print("- Enkodingis operacia warmatebit shesrulda")
                 encode(reading())
-            elif(action == "-D"):
+              case "-D":
                 print("- Dekodingis operacia warmatebit shesrulda")
                 decode(reading())
-            else:
+              case _:
                 print("shemoitanet argumenti [-E] an [-D]")
-        else:
-            print("miutitet faili argumentshi")
-    else:
-        print("sheamowmet argumentebi")
-
+        case _:
+            print("sheamowmet argumentebi")
 
 main()
